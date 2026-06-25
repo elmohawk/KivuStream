@@ -18,7 +18,7 @@ const supabaseClient =
 //         KIVUSTREAM TMDB
 // ====================================
 
-const TMDB_KEY = "YOUR_TMDB_API_KEY";
+const TMDB_KEY = "8b8937bf3e114fa3502358a4f090c0df";
 const TMDB_BASE = "https://api.themoviedb.org/3";
 const TMDB_IMG = "https://image.tmdb.org/t/p/w300";
 async function getTMDB(movieTitle){
