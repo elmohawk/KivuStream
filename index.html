@@ -1,0 +1,602 @@
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        KIVUSTREAM - Watch Movies & Series
+    </title>
+
+    <!-- SEO -->
+
+    <meta
+        name="description"
+        content="Watch the latest movies, TV series, anime and premium entertainment on KIVUSTREAM.">
+
+    <meta
+        name="keywords"
+        content="movies, streaming, series, anime, KIVUSTREAM">
+
+    <meta
+        name="theme-color"
+        content="#0d6efd">
+
+
+    <!-- FAVICON -->
+
+    <link
+        rel="icon"
+        href="assets/logo.png">
+
+
+    <!-- FONT AWESOME -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+    <!-- GOOGLE FONTS -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+<body>
+
+  <!-- Background -->
+  <div class="bg-grid"></div>
+
+  <!-- Header -->
+  <header class="header">
+
+    <div class="logo">
+      <span>KIVU</span>STREAM
+    </div>
+
+    <nav class="navbar">
+      <a href="#" class="active">Home</a>
+      <a href="#">Movies</a>
+      <a href="#">Series</a>
+      <a href="#">Categories</a>
+    </nav>
+
+    <div class="header-actions">
+
+    <button class="search-toggle" aria-label="Search">
+
+    <span class="search-icon">
+        <i class="fas fa-search"></i>
+    </span>
+
+    <span class="search-glow"></span>
+
+</button>
+
+      <button class="icon-btn">
+        <i class="fas fa-user"></i>
+      </button>
+
+    </div>
+
+  </header>
+  <!-- ================= SEARCH OVERLAY ================= -->
+
+<div class="search-overlay">
+
+    <div class="search-panel">
+
+        <button class="close-search">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <h1>Search Movies & Series</h1>
+
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+
+            <input
+                type="text"
+                id="search-input"
+                placeholder="What do you want to watch?"
+                autocomplete="off"
+            >
+        </div>
+
+        <div class="search-results" id="search-results"></div>
+
+    </div>
+
+</div>
+<!-- ================= HERO SLIDER ================= -->
+  <!-- ================= HERO SLIDER ================= -->
+<section class="hero" id="hero">
+
+    <!-- VIDEO BACKGROUND -->
+    <div class="hero-video-container">
+        <iframe
+            id="hero-video"
+            src=""
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- DARK OVERLAY -->
+    <div class="hero-overlay"></div>
+
+    <!-- CONTENT -->
+    <div class="hero-content">
+
+        <span class="hero-tag"> STREAMING</span>
+
+        <h1 class="hero-title">Loading...</h1>
+
+        <div class="hero-meta"></div>
+
+        <p class="hero-description"></p>
+
+        <div class="hero-buttons">
+
+            <button class="watch-btn">
+                <i class="fas fa-play"></i>
+                Watch Now
+            </button>
+
+            <button class="info-btn">
+                <i class="fas fa-info-circle"></i>
+                More Info
+            </button>
+
+        </div>
+
+    </div>
+<!-- HERO CONTROLS -->
+
+<button class="hero-nav prev-hero" aria-label="Previous">
+    <i class="fas fa-chevron-left"></i>
+</button>
+
+<button class="hero-nav next-hero" aria-label="Next">
+    <i class="fas fa-chevron-right"></i>
+</button>
+
+<!-- DOTS -->
+<div class="hero-dots"></div>
+</section> 
+
+  <!-- ================= RECENTLY ADDED ================= -->
+
+<section class="movie-section">
+
+  <div class="section-header">
+    <h2>Recently Added</h2>
+    <a href="#">View All</a>
+  </div>
+
+  <div class="movie-row">
+
+    <!-- Movie Card 1 -->
+    <div class="movie-card">
+      <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" alt="Movie">
+
+      <div class="movie-overlay">
+        <button><i class="fas fa-play"></i></button>
+      </div>
+
+      <div class="movie-info">
+        <h3>Avengers: Endgame</h3>
+        <span>Action • 2019</span>
+      </div>
+    </div>
+
+    <!-- Movie Card 2 -->
+    <div class="movie-card">
+      <img src="https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg" alt="Movie">
+
+      <div class="movie-overlay">
+        <button><i class="fas fa-play"></i></button>
+      </div>
+
+      <div class="movie-info">
+        <h3>Wonder Woman 1984</h3>
+        <span>Action • 2020</span>
+      </div>
+    </div>
+
+    <!-- Movie Card 3 -->
+    <div class="movie-card">
+      <img src="https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg" alt="Movie">
+
+      <div class="movie-overlay">
+        <button><i class="fas fa-play"></i></button>
+      </div>
+
+      <div class="movie-info">
+        <h3>Avengers: Infinity War</h3>
+        <span>Sci-Fi • 2018</span>
+      </div>
+    </div>
+
+    <!-- Movie Card 4 -->
+    <div class="movie-card">
+      <img src="https://image.tmdb.org/t/p/w500/6KErczPBROQty7QoIsaa6wJYXZi.jpg" alt="Movie">
+
+      <div class="movie-overlay">
+        <button><i class="fas fa-play"></i></button>
+      </div>
+
+      <div class="movie-info">
+        <h3>Dune</h3>
+        <span>Sci-Fi • 2021</span>
+      </div>
+    </div>
+
+    <!-- Movie Card 5 -->
+    <div class="movie-card">
+      <img src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg" alt="Movie">
+
+      <div class="movie-overlay">
+        <button><i class="fas fa-play"></i></button>
+      </div>
+
+      <div class="movie-info">
+        <h3>Ad Astra</h3>
+        <span>Adventure • 2019</span>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+  <!-- ================= LATEST SERIES ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>Latest Series</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="latest-series"></div>
+</section>
+
+<!-- ================= ACTION ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>Action</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="action-movies"></div>
+</section>
+
+<!-- ================= HORROR ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>Horror</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="horror-movies"></div>
+</section>
+
+<!-- ================= COMEDY ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>Comedy</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="comedy-movies"></div>
+</section>
+
+<!-- ================= ROMANCE ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>Romance</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="romance-movies"></div>
+</section>
+
+<!-- ================= HIGHSCHOOL ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>High School</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="highschool-movies"></div>
+</section>
+
+<!-- ================= DRAMA ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>Drama</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="drama-movies"></div>
+</section>
+
+<!-- ================= CRIME ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>Crime</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="crime-movies"></div>
+</section>
+
+<!-- ================= SCI-FI ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>Sci-Fi</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="scifi-movies"></div>
+</section>
+
+<!-- ================= ANIMATION ================= -->
+<section class="movie-section">
+  <div class="section-header">
+    <h2>Animation</h2>
+    <a href="#">View All</a>
+  </div>
+  <div class="movie-row" id="animation-movies"></div>
+</section>
+ <!-- ======================================
+        PREMIUM HELP & SUPPORT
+====================================== -->
+<section class="help-support" id="support">
+
+    <div class="section-heading">
+        <span class="section-badge">24/7 Customer Care</span>
+        <h2 class="help-title">🛠 Help & Support Center</h2>
+        <p class="help-subtitle">
+            Need assistance? Our support team is always ready to help you.
+        </p>
+    </div>
+
+    <div class="help-grid">
+
+        <!-- Email Support -->
+        <div class="help-card">
+            <div class="help-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+
+            <h3>Email Support</h3>
+
+            <p>
+                Send us your questions and receive professional assistance.
+            </p>
+
+            <a href="mailto:mrhawk2007@gmail.com" class="help-btn">
+                <i class="fas fa-paper-plane"></i>
+                Send Email
+            </a>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="help-card featured-support">
+            <div class="help-icon">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+
+            <h3>Live WhatsApp Chat</h3>
+
+            <p>
+                Talk directly with our support team for instant assistance.
+            </p>
+
+            <a href="https://wa.me/250794669266"
+               target="_blank"
+               class="help-btn">
+                <i class="fab fa-whatsapp"></i>
+                Start Chat
+            </a>
+
+            <span class="online-badge">
+                ● Online Now
+            </span>
+        </div>
+
+        <!-- Fast Response -->
+        <div class="help-card">
+            <div class="help-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+
+            <h3>Fast Response</h3>
+
+            <p>
+                Most messages are answered within a few minutes.
+            </p>
+
+            <div class="status-badge">
+                ⚡ Available 24/7
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================
+             PREMIUM FOOTER
+====================================== -->
+<footer class="footer">
+
+    <div class="footer-wrapper">
+
+        <!-- Brand -->
+        <div class="footer-brand">
+
+            <h2 class="footer-logo">
+                KIVU<span>STREAM</span>
+            </h2>
+
+            <p class="footer-description">
+                Premium entertainment platform delivering movies,
+                TV series, anime, and cinematic experiences in HD quality. With Best IT in This Game IT HAWK_RW and APEX HAWK STUDIO
+            </p>
+
+            <div class="trust-badges">
+                <span>HD Streaming</span>
+                <span>24/7 Support</span>
+                <span>Unlimited Access</span>
+            </div>
+
+        </div>
+
+
+        <!-- Quick Links -->
+        <div class="footer-links">
+
+            <h3>Quick Links</h3>
+
+            <a href="#">🏠 Home</a>
+            <a href="#movies">🎬 Movies</a>
+            <a href="#series">📺 Series</a>
+            <a href="#support">🛠 Support</a>
+            <a href="#">⭐ My Watchlist</a>
+
+        </div>
+
+
+        <!-- Categories -->
+        <div class="footer-links">
+
+            <h3>Categories</h3>
+
+            <a href="#">🔥 Action</a>
+            <a href="#">👻 Horror</a>
+            <a href="#">😂 Comedy</a>
+            <a href="#">💕 Romance</a>
+            <a href="#">🚀 Sci-Fi</a>
+
+        </div>
+
+
+        <!-- Social -->
+        <div class="footer-follow">
+
+            <h3>Connect With Us</h3>
+
+            <div class="phone-number">
+                <i class="fas fa-phone"></i>
+                +250 794 669 266
+            </div>
+
+            <div class="footer-social-grid">
+
+                <a href="https://wa.me/250794669266" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+
+                <a href="https://www.tiktok.com/@mrhawk733" target="_blank">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+
+                <a href="https://x.com/mrhawk2007" target="_blank">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+
+                <a href="https://www.facebook.com/mrhawk734" target="_blank">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+
+                <a href="https://www.instagram.com/hawk_mrperfect/" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <a href="https://youtube.com/@mrhawk_rw" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                </a>
+
+                <a href="https://t.me/it_hawk_rw" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="footer-bottom">
+
+        <div class="footer-bottom-content">
+
+            <span>
+                © 2026 KIVUSTREAM. All Rights Reserved.
+            </span>
+
+            <div class="footer-bottom-links">
+                <a href="/terms.html">Terms</a>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/dmca.html">DMCA</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- FLOATING ACTION BUTTONS -->
+
+<a href="tel:+250794669266"
+   class="call-float"
+   title="Call Support">
+
+    <i class="fas fa-phone"></i>
+
+</a>
+
+<a href="https://wa.me/250794669266"
+   class="whatsapp-float"
+   target="_blank"
+   title="WhatsApp Support">
+
+    <i class="fab fa-whatsapp"></i>
+
+</a>
+  
+  
+  
+<!-- JAVASCRIPT -->
+
+<script src="js/supabase.js"></script>
+<script src="js/hero.js"></script>
+<script src="js/movies.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
