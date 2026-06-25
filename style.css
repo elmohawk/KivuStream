@@ -1616,3 +1616,30 @@ section{
         0 0 0 2px rgba(13,110,253,.4),
         0 0 30px rgba(13,110,253,.2);
 }
+.legal-page{
+max-width:900px;
+margin:auto;
+padding:50px 20px;
+color:#fff;
+line-height:1.8;
+}
+
+.legal-page h1{
+font-size:2.5rem;
+margin-bottom:20px;
+}
+
+.legal-page h2{
+margin-top:30px;
+margin-bottom:10px;
+color:#ffcc00;
+}
+
+.legal-page p,
+.legal-page li{
+opacity:.9;
+}
+
+.legal-page ul{
+padding-left:25px;
+}
