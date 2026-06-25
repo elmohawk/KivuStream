@@ -30,39 +30,6 @@ async function getTMDB(movieTitle){
     return await res.json();
 }
 // ====================================
-//       searchMovies query 
-// ====================================
-
-async function searchMovies(query){
-
-    if(query.length < 2){
-        results.innerHTML = "";
-        return;
-    }
-
-    const { data, error } =
-        await supabaseClient
-        .from("movies")
-        .select("*")
-        .ilike("title", `%${query}%`)
-        .limit(20);
-
-    if(error){
-        console.error(error);
-        return;
-    }
-
-    // If Supabase has results → render them
-    if(data && data.length){
-        renderSearchResults(data);
-        return;
-    }
-
-    // If no Supabase results → fallback to TMDB live search
-    searchTMDB(query);
-
-}
-// ====================================
 //       searchTMDB query 
 // ====================================
 
@@ -71,7 +38,7 @@ async function searchTMDB(query){
     try{
 
         const res = await fetch(
-            `${TMDB_URL}/search/movie?api_key=${TMDB_KEY}&query=${query}`
+            `${TMDB_BASE}/search/movie?api_key=${TMDB_KEY}&query=${query}`
         );
 
         const json = await res.json();
@@ -138,118 +105,6 @@ function renderTMDBResults(movies){
     `).join("");
 
 }
-// ====================================
-// LOAD FEATURED HERO
-// ====================================
-
-async function loadHero(){
-
-    const { data, error } =
-        await supabaseClient
-        .from("movies")
-        .select("*")
-        .eq("featured", true)
-        .limit(20);
-
-    if(error){
-
-        console.error(
-            "Hero Error:",
-            error.message
-        );
-
-        return;
-    }
-
-    if(!data || !data.length)
-        return;
-
-
-    // Random Featured Movie
-
-    const movie =
-        data[
-            Math.floor(
-                Math.random() *
-                data.length
-            )
-        ];
-
-    renderHero(movie);
-
-}
-function renderHero(movie){
-
-    const hero =
-        document.getElementById("hero");
-
-    hero.style.backgroundImage = `
-        linear-gradient(
-            90deg,
-            rgba(5,8,22,.96) 10%,
-            rgba(5,8,22,.75) 40%,
-            rgba(5,8,22,.2) 100%
-        ),
-        url('${movie.backdrop}')
-    `;
-
-    hero.querySelector(
-        ".hero-title"
-    ).textContent =
-        movie.title;
-
-
-    hero.querySelector(
-        ".hero-description"
-    ).textContent =
-        movie.description;
-
-
-    hero.querySelector(
-        ".hero-meta"
-    ).innerHTML = `
-
-        <span>${movie.year}</span>
-
-        <span>${movie.category}</span>
-
-        <span>${movie.duration || '2h'}</span>
-
-        <span>IMDb ${movie.imdb || '8.0'}</span>
-
-        <span>HD</span>
-
-    `;
-
-
-    // Watch Button
-
-    hero.querySelector(
-        ".watch-btn"
-    ).onclick = ()=>{
-
-        window.location.href =
-            `watch.html?id=${movie.id}`;
-
-    };
-
-
-    // Info Button
-
-    hero.querySelector(
-        ".info-btn"
-    ).onclick = ()=>{
-
-        window.location.href =
-            `details.html?id=${movie.id}`;
-
-    };
-
-}
-document.addEventListener(
-    "DOMContentLoaded",
-    loadHero
-);
 // ======================================
 // HERO SLIDER
 // ======================================
@@ -257,35 +112,6 @@ document.addEventListener(
 let featuredMovies = [];
 let currentHero = 0;
 let heroInterval;
-
-
-// LOAD FEATURED MOVIES
-
-async function loadHeroSlider(){
-
-    const { data, error } =
-        await supabaseClient
-        .from("movies")
-        .select("*")
-        .eq("featured", true);
-
-    if(error){
-
-        console.error(error);
-        return;
-    }
-
-    if(!data.length) return;
-
-    featuredMovies = data;
-
-    renderHero(currentHero);
-
-    createDots();
-
-    startHeroSlider();
-
-}
 function renderHero(index){
 
     const movie = featuredMovies[index];
@@ -1201,11 +1027,9 @@ function resetAutoPlay(){
     startAutoPlay();
 
 }
-function stopPreviousVideo(){
-
-    if(heroVideo)
-        heroVideo.src = "";
-
+async function renderHero(index){
+    const heroVideo =
+        document.getElementById("hero-video");
 }
 document.addEventListener("DOMContentLoaded", () => {
 
