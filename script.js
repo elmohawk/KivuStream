@@ -1066,3 +1066,24 @@ async function getTrailer(movieId){
     }
 
 }
+window.addEventListener("load", () => {
+
+  const loader =
+    document.getElementById("loader");
+
+  loader.classList.add("hide");
+
+  setTimeout(() => {
+    loader.remove();
+  }, 500);
+
+});
+document.getElementById("year")
+.textContent =
+new Date().getFullYear();
+container.innerHTML = `
+<div class="skeleton-card"></div>
+<div class="skeleton-card"></div>
+<div class="skeleton-card"></div>
+<div class="skeleton-card"></div>
+`;
