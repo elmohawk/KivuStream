@@ -746,3 +746,157 @@ async function unifiedSearch(query){
 
     results.innerHTML = html || `<div class="no-results">No results found</div>`;
 }
+async function loadMovie(){
+
+    try {
+
+        // 1. LOCAL MOVIE (SUPABASE)
+        if(movieId){
+
+            const { data, error } = await supabaseClient
+                .from("movies")
+                .select("*")
+                .eq("id", movieId)
+                .single();
+
+            if(error) throw error;
+
+            currentMovie = data;
+            renderMovie(data);
+            loadEpisodes(movieId);
+            loadComments(movieId);
+
+            return;
+        }
+
+        // 2. TMDB MOVIE (FALLBACK)
+        if(tmdbId){
+
+            const res = await fetch(
+                `${TMDB_BASE}/movie/${tmdbId}?api_key=${TMDB_KEY}&append_to_response=videos`
+            );
+
+            const data = await res.json();
+
+            currentMovie = data;
+            renderTMDBMovie(data);
+
+        }
+
+    } catch(err){
+        console.error("Load error:", err);
+    }
+}
+    function renderMovie(movie){
+
+    document.getElementById("movie-title").textContent = movie.title;
+    document.getElementById("movie-description").textContent = movie.description;
+    document.getElementById("movie-category").textContent = movie.category;
+    document.getElementById("movie-year").textContent = movie.year;
+
+    document.getElementById("movie-poster").src = movie.poster;
+    document.getElementById("movie-banner").style.backgroundImage =
+        `url('${movie.banner || movie.poster}')`;
+
+    // VIDEO / STREAM URL
+    const player = document.getElementById("player");
+
+    if(movie.worker_url){
+        player.src = movie.worker_url;
+    }
+
+    // DOWNLOAD BUTTON
+    const downloadBtn = document.getElementById("download-btn");
+
+    downloadBtn.onclick = () => {
+
+        if(movie.download_links){
+            const links = JSON.parse(movie.download_links);
+            window.open(links[0]?.url || "#", "_blank");
+        }
+
+    };
+}
+    function renderTMDBMovie(movie){
+
+    document.getElementById("movie-title").textContent = movie.title || movie.name;
+    document.getElementById("movie-description").textContent = movie.overview;
+    document.getElementById("movie-year").textContent = movie.release_date?.split("-")[0];
+
+    document.getElementById("movie-poster").src =
+        movie.poster_path
+            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+            : "";
+
+    document.getElementById("movie-banner").style.backgroundImage =
+        `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
+
+    const player = document.getElementById("player");
+
+    const trailer = movie.videos?.results?.find(v =>
+        v.type === "Trailer" && v.site === "YouTube"
+    );
+
+    if(trailer){
+        player.src = `https://www.youtube.com/embed/${trailer.key}`;
+    }
+}
+    async function loadEpisodes(movieId){
+
+    const { data, error } = await supabaseClient
+        .from("episodes")
+        .select("*")
+        .eq("series_id", movieId)
+        .order("season", { ascending: true });
+
+    if(error) return;
+
+    const container = document.getElementById("episodes-container");
+
+    container.innerHTML = data.map(ep => `
+        <div class="episode-card" data-url="${ep.download_link}">
+            <h4>Season ${ep.season} - Episode ${ep.episode}</h4>
+            <button class="play-episode">▶ Play</button>
+        </div>
+    `).join("");
+
+    document.querySelectorAll(".play-episode").forEach(btn => {
+        btn.onclick = () => {
+            document.getElementById("player").src =
+                btn.closest(".episode-card").dataset.url;
+        };
+    });
+}
+    async function loadComments(movieId){
+
+    const { data } = await supabaseClient
+        .from("movie_comments")
+        .select("*")
+        .eq("movie_id", movieId)
+        .order("created_at", { ascending: false });
+
+    const container = document.getElementById("comments-container");
+
+    container.innerHTML = data.map(c => `
+        <div class="comment">
+            <strong>${c.username}</strong>
+            <p>${c.comment}</p>
+        </div>
+    `).join("");
+}
+    document.getElementById("comment-btn").onclick = async () => {
+
+    const username = document.getElementById("username-input").value;
+    const comment = document.getElementById("comment-input").value;
+
+    await supabaseClient
+        .from("movie_comments")
+        .insert([{
+            movie_id: movieId,
+            username,
+            comment
+        }]);
+
+    loadComments(movieId);
+};
+    document.addEventListener("DOMContentLoaded", loadMovie);
