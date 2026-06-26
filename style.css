@@ -1616,3 +1616,14 @@ section{
         0 0 0 2px rgba(13,110,253,.4),
         0 0 30px rgba(13,110,253,.2);
 }
+.viewall-row{
+    display:flex;
+    gap:16px;
+    overflow-x:auto;
+    scroll-behavior:smooth;
+    padding:20px 0;
+}
+
+.viewall-row::-webkit-scrollbar{
+    display:none;
+}
