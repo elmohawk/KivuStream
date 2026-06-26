@@ -49,12 +49,13 @@ async function searchTMDB(query){
 
     }catch(err){
         console.error("TMDB error:", err);
+        const movies = json.results.filter(
+item => item.media_type !== "person"
+);
     }
 
 }
-const movies = json.results.filter(
-item => item.media_type !== "person"
-);
+
 // ====================================
 //      renderTMDBResults
 // ====================================
