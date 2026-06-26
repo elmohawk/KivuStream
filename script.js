@@ -900,3 +900,4 @@ async function loadMovie(){
     loadComments(movieId);
 };
     document.addEventListener("DOMContentLoaded", loadMovie);
+}
