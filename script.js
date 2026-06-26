@@ -1000,7 +1000,7 @@ function initHero(movies) {
   heroIndex = 0;
   currentHero = heroMovies[0];
 
-  showHero(heroIndex);
+  showHero(heroMovies[heroIndex]);
 
   clearInterval(heroInterval);
 
@@ -1093,7 +1093,7 @@ function nextHero() {
 
   currentHero = heroMovies[heroIndex];
 
-  showHero(heroIndex);
+showHero(heroMovies[heroIndex]);
 }
 
 function prevHero() {
@@ -1108,7 +1108,7 @@ function prevHero() {
 
   currentHero = heroMovies[heroIndex];
 
-  showHero(heroIndex);
+showHero(heroMovies[heroIndex]);
 }
 
 /* =========================
@@ -3462,50 +3462,47 @@ async function loadHeroTrailer(movie) {
     heroVideo.classList.remove("show");
   }
 }
-async function showHero(index) {
+function showHero(movie) {
 
-  if (!heroMovies?.length) return;
+    const hero = document.getElementById("hero");
 
-  if (index >= heroMovies.length)
-    index = 0;
+    if (!hero || !movie) return;
 
-  if (index < 0)
-    index = heroMovies.length - 1;
+    const title = hero.querySelector(".hero-title");
+    const desc = hero.querySelector(".hero-description");
+    const meta = hero.querySelector(".hero-meta");
+    const watchBtn = hero.querySelector(".watch-btn");
+    const infoBtn = hero.querySelector(".info-btn");
 
-  const movie = heroMovies[index];
+    if (title)
+        title.textContent = movie.title || "";
 
-  if (!movie) return;
+    if (desc)
+        desc.textContent = movie.description || movie.overview || "";
 
-  currentHero = movie;
+    if (meta) {
+        meta.innerHTML = `
+            <span>${movie.year || ""}</span>
+            <span>${movie.category || ""}</span>
+            <span>${movie.duration || ""}</span>
+        `;
+    }
 
-  document.getElementById("hero-title").textContent =
-    movie.title || movie.name || "Untitled";
+    hero.style.backgroundImage = `
+        linear-gradient(
+            rgba(0,0,0,.75),
+            rgba(0,0,0,.75)
+        ),
+        url('${movie.banner || movie.backdrop || movie.image || ""}')
+    `;
 
-  document.getElementById("hero-description").textContent =
-    movie.description ||
-    movie.overview ||
-    "Watch now on KivuStream.";
+    if (watchBtn)
+        watchBtn.onclick = () =>
+            window.location =
+                `watch.html?id=${movie.id}`;
 
-  const heroSlider =
-    document.getElementById("hero-slider");
-
-  heroSlider.style.backgroundImage = `
-    linear-gradient(
-      to right,
-      rgba(0,0,0,.88),
-      rgba(0,0,0,.35)
-    ),
-    url('${
-      movie.banner ||
-      movie.backdrop ||
-      movie.poster ||
-      movie.image ||
-      ""
-    }')
-  `;
-
-  heroSlider.style.backgroundSize = "cover";
-  heroSlider.style.backgroundPosition = "center";
-
-  await loadHeroTrailer(movie);
+    if (infoBtn)
+        infoBtn.onclick = () =>
+            window.location =
+                `details.html?id=${movie.id}`;
 }
