@@ -341,7 +341,7 @@ window.allMovies = [];
 let allMovies = window.allMovies;
 let currentMovie = null;
 let currentHero = null;
-
+const HOMEPAGE_LIMIT = 7;
 /* =========================
    DOM HELPER
 ========================= */
@@ -1172,7 +1172,16 @@ function downloadMovie() {
 
   window.open(currentMovie.download, "_blank");
 }
+/* =========================
+      WATCH MOVIE
+========================= */
+function watchMovie() {
+    if (!currentMovie) return;
 
+    saveContinueWatching(currentMovie);
+
+    window.location.href = `watch.html?id=${currentMovie.id}`;
+}
 /* =========================
    SHARE
 ========================= */
@@ -2369,9 +2378,6 @@ document.addEventListener("DOMContentLoaded", () => {
 /* =========================
    PAGINATION ENGINE
 ========================= */
-
-const HOMEPAGE_LIMIT = 7;
-
 const sectionPages = {};
 const sectionData = {};
 function renderPaginatedRow(id, items) {
@@ -2383,7 +2389,7 @@ function renderPaginatedRow(id, items) {
   container.innerHTML = "";
 
   const latest =
-    items.slice(0, HOMEPAGE_LIMIT);
+    items.slice(0,);
 
   latest.forEach((movie) => {
     container.appendChild(
