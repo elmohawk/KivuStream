@@ -37,9 +37,9 @@ async function searchTMDB(query){
 
     try{
 
-        const res = await fetch(
-            `${TMDB_BASE}/search/movie?api_key=${TMDB_KEY}&query=${query}`
-        );
+       const res = await fetch(
+`${TMDB_BASE}/search/multi?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}`
+);
 
         const json = await res.json();
 
@@ -52,6 +52,9 @@ async function searchTMDB(query){
     }
 
 }
+const movies = json.results.filter(
+item => item.media_type !== "person"
+);
 // ====================================
 //      renderTMDBResults
 // ====================================
@@ -230,32 +233,6 @@ function nextHero(){
     renderHero(currentHero);
 
 }
-
-
-function prevHero(){
-
-    currentHero--;
-
-    if(currentHero < 0)
-        currentHero =
-            featuredMovies.length - 1;
-
-    renderHero(currentHero);
-
-}
-
-
-function startHeroSlider(){
-
-    heroInterval = setInterval(()=>{
-
-        nextHero();
-
-    },10000);
-
-}
-
-
 function restartSlider(){
 
     clearInterval(heroInterval);
@@ -875,56 +852,7 @@ async function loadHeroSlider(){
     startAutoPlay();
 
 }
-async function renderHero(index){
 
-    const movie = featuredMovies[index];
-
-    if(!movie) return;
-
-    const heroVideo = document.getElementById("hero-video");
-
-    const trailerKey = await getTrailer(movie.tmdb_id || movie.id);
-
-    // DEFAULT Fallback (no trailer)
-    if(!trailerKey){
-
-        heroVideo.src = "";
-
-    }else{
-
-        heroVideo.src =
-        `https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}`;
-
-    }
-
-    // TEXT CONTENT
-
-    document.querySelector(".hero-title").textContent =
-        movie.title;
-
-    document.querySelector(".hero-description").textContent =
-        movie.description;
-
-    document.querySelector(".hero-meta").innerHTML = `
-        <span>${movie.year}</span>
-        <span>${movie.category}</span>
-        <span>HD</span>
-        <span>IMDb ${movie.imdb || "8.0"}</span>
-    `;
-
-    // BUTTONS
-
-    document.querySelector(".watch-btn").onclick = () => {
-        window.location.href = `watch.html?id=${movie.id}`;
-    };
-
-    document.querySelector(".info-btn").onclick = () => {
-        window.location.href = `details.html?id=${movie.id}`;
-    };
-
-    updateDots();
-
-}
 function startHeroSlider(){
 
     heroInterval = setInterval(() => {
@@ -940,19 +868,6 @@ function startHeroSlider(){
     }, 18000); // 18s for trailers
 
 }
-function nextHero(){
-
-    currentHero++;
-
-    if(currentHero >= featuredMovies.length)
-        currentHero = 0;
-
-    renderHero(currentHero);
-
-    resetAutoPlay();
-
-}
-
 function prevHero(){
 
     currentHero--;
@@ -963,51 +878,6 @@ function prevHero(){
     renderHero(currentHero);
 
     resetAutoPlay();
-
-}
-function createDots(){
-
-    const dotsContainer =
-        document.querySelector(".hero-dots");
-
-    dotsContainer.innerHTML = "";
-
-    featuredMovies.forEach((_,i)=>{
-
-        const dot =
-            document.createElement("div");
-
-        dot.className = "hero-dot";
-
-        dot.onclick = () => {
-
-            currentHero = i;
-
-            renderHero(currentHero);
-
-            resetAutoPlay();
-
-        };
-
-        dotsContainer.appendChild(dot);
-
-    });
-
-    updateDots();
-
-}
-
-function updateDots(){
-
-    document.querySelectorAll(".hero-dot")
-    .forEach((dot,i)=>{
-
-        dot.classList.toggle(
-            "active",
-            i === currentHero
-        );
-
-    });
 
 }
 function startAutoPlay(){
@@ -1027,22 +897,6 @@ function resetAutoPlay(){
     startAutoPlay();
 
 }
-async function renderHero(index){
-    const heroVideo =
-        document.getElementById("hero-video");
-}
-document.addEventListener("DOMContentLoaded", () => {
-
-    loadHeroSlider();
-
-    document.querySelector(".next-hero")
-        .onclick = nextHero;
-
-    document.querySelector(".prev-hero")
-        .onclick = prevHero;
-
-});
-
 async function getTrailer(movieId){
 
     try{
@@ -1068,22 +922,20 @@ async function getTrailer(movieId){
 }
 window.addEventListener("load", () => {
 
-  const loader =
-    document.getElementById("loader");
+    const loader = document.getElementById("loader");
 
-  loader.classList.add("hide");
+    if (loader) {
 
-  setTimeout(() => {
-    loader.remove();
-  }, 500);
+        loader.classList.add("hide");
 
+        setTimeout(() => {
+            loader.remove();
+        }, 500);
+
+    }
+
+});
 });
 document.getElementById("year")
 .textContent =
 new Date().getFullYear();
-container.innerHTML = `
-<div class="skeleton-card"></div>
-<div class="skeleton-card"></div>
-<div class="skeleton-card"></div>
-<div class="skeleton-card"></div>
-`;
