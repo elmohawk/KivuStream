@@ -429,3 +429,9 @@ loader.remove();
 }
 
 });
+const params = new URLSearchParams(window.location.search);
+
+const movieId = params.get("id");
+const tmdbId = params.get("tmdb");
+
+let currentMovie = null;
