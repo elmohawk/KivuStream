@@ -1,4 +1,17 @@
+const MAINTENANCE_MODE = true;
+document.addEventListener("DOMContentLoaded", () => {
 
+    if (!MAINTENANCE_MODE) {
+        document.getElementById("maintenance-screen").remove();
+        return;
+    }
+
+    // Allow only admin
+    if (localStorage.getItem("kivustream_admin") === "true") {
+        document.getElementById("maintenance-screen").remove();
+    }
+
+});
 const tmdbCache = new Map();
 /* =========================
    TMDB API INTEGRATION
