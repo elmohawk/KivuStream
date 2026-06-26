@@ -37,25 +37,25 @@ async function searchTMDB(query){
 
     try{
 
-       const res = await fetch(
-`${TMDB_BASE}/search/multi?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}`
-);
+        const res = await fetch(
+            `${TMDB_BASE}/search/multi?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}`
+        );
 
         const json = await res.json();
 
-        const movies = json.results || [];
+        const movies = (json.results || []).filter(
+            item => item.media_type !== "person"
+        );
 
         renderTMDBResults(movies);
 
     }catch(err){
+
         console.error("TMDB error:", err);
-        const movies = json.results.filter(
-item => item.media_type !== "person"
-);
+
     }
 
 }
-
 // ====================================
 //      renderTMDBResults
 // ====================================
@@ -374,26 +374,46 @@ async function loadCategory(
 // ======================================
 // LOAD SERIES
 // ======================================
-async function loadSeries(){
 
-    const { data, error } =
-        await supabaseClient
-        .from("movies")
-        .select("*")
-        .eq("type","series")
-        .limit(20);
+async function loadSeries() {
 
-    if(error){
-        console.error(error);
-        return;
+    const container = document.getElementById("latest-series");
+
+    try {
+
+        const { data, error } = await supabaseClient
+            .from("movies")
+            .select("*")
+            .eq("category", "Series")
+            .order("created_at", { ascending: false })
+            .limit(20);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty-message">
+                    No series available.
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = data
+            .map(createMovieCard)
+            .join("");
+
+    } catch (err) {
+
+        console.error("Error loading series:", err);
+
+        container.innerHTML = `
+            <div class="empty-message">
+                Failed to load series.
+            </div>
+        `;
     }
-
-    document.getElementById(
-        "latest-series"
-    ).innerHTML =
-        data
-        .map(createMovieCard)
-        .join("");
 
 }
 // ======================================
@@ -496,8 +516,6 @@ cards.forEach(card => {
     });
 
 });
-
-
 // ======================================
 // HORIZONTAL SCROLL WITH MOUSE WHEEL
 // ======================================
