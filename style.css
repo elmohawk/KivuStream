@@ -1,3 +1,49 @@
+#maintenance-screen{
+    position:fixed;
+    inset:0;
+    background:#050505;
+    z-index:999999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.maintenance-box{
+    text-align:center;
+    color:#fff;
+    width:min(90%,500px);
+}
+
+.maintenance-logo{
+    width:120px;
+    margin-bottom:20px;
+}
+
+.maintenance-box h1{
+    font-size:2rem;
+    margin-bottom:15px;
+}
+
+.maintenance-box p{
+    color:#bbb;
+    line-height:1.6;
+}
+
+.maintenance-loader{
+    width:60px;
+    height:60px;
+    margin:30px auto;
+    border:5px solid rgba(255,255,255,.15);
+    border-top:5px solid #0d6efd;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
 /* RESET */
 
 *{
