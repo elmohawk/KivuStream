@@ -22,40 +22,6 @@ const TMDB_KEY = "8b8937bf3e114fa3502358a4f090c0df";
 const TMDB_BASE = "https://api.themoviedb.org/3";
 const TMDB_IMG = "https://image.tmdb.org/t/p/w300";
 async function getTMDB(movieTitle){
-
-    const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&query=${movieTitle}`
-    );
-
-    return await res.json();
-}
-// ====================================
-//       searchTMDB query 
-// ====================================
-
-async function searchTMDB(query){
-
-    try{
-
-        const res = await fetch(
-            `${TMDB_BASE}/search/multi?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}`
-        );
-
-        const json = await res.json();
-
-        const movies = (json.results || []).filter(
-            item => item.media_type !== "person"
-        );
-
-        renderTMDBResults(movies);
-
-    }catch(err){
-
-        console.error("TMDB error:", err);
-
-    }
-
-}
 // ====================================
 //      renderTMDBResults
 // ====================================
@@ -118,9 +84,9 @@ let currentHero = 0;
 let heroInterval;
 function renderHero(index){
 
-    const movie = featuredMovies[index];
+   const movie = featuredMovies?.[index];
 
-    if(!movie) return;
+if(!movie) return;
 
     const hero =
         document.getElementById("hero");
@@ -136,7 +102,7 @@ function renderHero(index){
                 rgba(5,8,22,.75) 40%,
                 rgba(5,8,22,.2) 100%
             ),
-            url('${movie.backdrop}')
+            url('${movie.banner || movie.image || movie.backdrop || ""}')
         `;
 
         hero.querySelector(".hero-title")
@@ -485,19 +451,19 @@ console.log("KIVUSTREAM Loaded Successfully");
 // ======================================
 // STICKY HEADER EFFECT
 // ======================================
-
 const header = document.querySelector(".header");
 
 window.addEventListener("scroll", () => {
 
+    if(!header) return;
+
     if(window.scrollY > 50){
         header.classList.add("scrolled");
-    }else{
+    } else {
         header.classList.remove("scrolled");
     }
 
 });
-
 
 // ======================================
 // MOVIE CARD ANIMATION
@@ -606,252 +572,6 @@ document.querySelectorAll(".help-btn")
     });
 
 });
-document.addEventListener("click", e=>{
-
-    const btn =
-        e.target.closest(".play-btn");
-
-    if(!btn) return;
-
-    const movieId =
-        btn.dataset.id;
-
-    window.location.href =
-        `watch.html?id=${movieId}`;
-
-});
-// ====================================
-// SEARCH OVERLAY
-// ====================================
-
-const overlay =
-    document.querySelector(
-        ".search-overlay"
-    );
-
-const searchBtn =
-    document.querySelector(
-        ".search-toggle"
-    );
-
-const closeBtn =
-    document.querySelector(
-        ".close-search"
-    );
-
-const input =
-    document.getElementById(
-        "search-input"
-    );
-
-const results =
-    document.getElementById(
-        "search-results"
-    );
-
-
-// OPEN
-
-searchBtn.addEventListener(
-    "click",
-    ()=>{
-
-        overlay.classList.add(
-            "active"
-        );
-
-        setTimeout(()=>{
-
-            input.focus();
-
-        },300);
-
-    }
-);
-
-
-// CLOSE
-
-closeBtn.addEventListener(
-    "click",
-    ()=>{
-
-        overlay.classList.remove(
-            "active"
-        );
-
-    }
-);
-
-
-// ESC KEY
-
-document.addEventListener(
-    "keydown",
-    e=>{
-
-        if(e.key === "Escape"){
-
-            overlay.classList.remove(
-                "active"
-            );
-
-        }
-
-    }
-);
-let debounce;
-
-input.addEventListener(
-    "input",
-    ()=>{
-
-        clearTimeout(debounce);
-
-        debounce = setTimeout(()=>{
-
-            searchMovies(
-                input.value.trim()
-            );
-
-        },300);
-
-    }
-);
-// ====================================
-// SEARCH MOVIES
-// ====================================
-
-async function searchMovies(query){
-
-    if(query.length < 2){
-
-        results.innerHTML = "";
-        return;
-
-    }
-
-    const { data, error } =
-        await supabaseClient
-        .from("movies")
-        .select("*")
-        .ilike(
-            "title",
-            `%${query}%`
-        )
-        .limit(30);
-
-    if(error){
-
-        console.error(error);
-        return;
-
-    }
-
-    renderSearchResults(data);
-
-}
-// ====================================
-// RENDER SEARCH
-// ====================================
-
-function renderSearchResults(movies){
-
-    if(!movies.length){
-
-        results.innerHTML = `
-            <div class="no-results">
-                No movies found.
-            </div>
-        `;
-
-        return;
-    }
-
-    results.innerHTML =
-        movies.map(movie => `
-
-        <div class="movie-card">
-
-            <img
-                src="${movie.poster}"
-                alt="${movie.title}"
-            >
-
-            <div class="movie-overlay">
-
-                <button
-                    class="play-btn"
-                    data-id="${movie.id}">
-
-                    <i class="fas fa-play"></i>
-
-                </button>
-
-            </div>
-
-            <div class="movie-info">
-
-                <h3>${movie.title}</h3>
-
-                <span>
-                    ${movie.category}
-                    •
-                    ${movie.year}
-                </span>
-
-            </div>
-
-        </div>
-
-    `).join("");
-
-}
-results.addEventListener(
-    "click",
-    e=>{
-
-        const btn =
-            e.target.closest(
-                ".play-btn"
-            );
-
-        if(!btn) return;
-
-        const id =
-            btn.dataset.id;
-
-        window.location.href =
-            `watch.html?id=${id}`;
-
-    }
-);
-
-results.addEventListener("click", e => {
-
-    const btn = e.target.closest(".play-btn");
-
-    if(!btn) return;
-
-    // SUPABASE MOVIE
-    if(btn.dataset.id){
-
-        window.location.href =
-            `watch.html?id=${btn.dataset.id}`;
-
-        return;
-    }
-
-    // TMDB MOVIE
-    if(btn.dataset.tmdb){
-
-        window.location.href =
-            `watch.html?tmdb=${btn.dataset.tmdb}`;
-
-        return;
-    }
-
-});
 async function loadHeroSlider(){
 
     const { data, error } =
@@ -860,16 +580,14 @@ async function loadHeroSlider(){
         .select("*")
         .eq("featured", true);
 
-    if(error || !data.length) return;
+    if(error || !data?.length) return;
 
     featuredMovies = data;
 
     createDots();
-
     renderHero(currentHero);
 
     startAutoPlay();
-
 }
 
 function startHeroSlider(){
@@ -957,3 +675,74 @@ window.addEventListener("load", () => {
 document.getElementById("year")
 .textContent =
 new Date().getFullYear();
+async function unifiedSearch(query){
+
+    if(query.length < 2){
+        results.innerHTML = "";
+        return;
+    }
+
+    try {
+
+        const { data: local } = await supabaseClient
+            .from("movies")
+            .select("*")
+            .ilike("title", `%${query}%`)
+            .limit(8);
+
+        const res = await fetch(
+            `${TMDB_BASE}/search/multi?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}`
+        );
+
+        const tmdbJson = await res.json();
+
+        const tmdb = (tmdbJson.results || [])
+            .filter(i => i.media_type !== "person")
+            .slice(0, 8);
+
+        renderUnifiedSearch(local || [], tmdb);
+
+    } catch(err){
+        console.error(err);
+    }
+}
+    function renderUnifiedSearch(local, tmdb){
+
+    let html = "";
+
+    html += local.map(movie => `
+        <div class="movie-card">
+            <img src="${movie.poster}" />
+            <div class="movie-overlay">
+                <button class="play-btn" data-id="${movie.id}">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+            <div class="movie-info">
+                <h3>${movie.title}</h3>
+                <span>${movie.category} • ${movie.year || ""}</span>
+            </div>
+        </div>
+    `).join("");
+
+    html += tmdb.map(movie => `
+        <div class="movie-card tmdb-card">
+            <img src="${movie.poster_path
+                ? TMDB_IMG + movie.poster_path
+                : 'https://via.placeholder.com/300'}"/>
+
+            <div class="movie-overlay">
+                <button class="play-btn" data-tmdb="${movie.id}">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+
+            <div class="movie-info">
+                <h3>${movie.title || movie.name}</h3>
+                <span>TMDB • ${movie.release_date || "N/A"}</span>
+            </div>
+        </div>
+    `).join("");
+
+    results.innerHTML = html || `<div class="no-results">No results found</div>`;
+}
