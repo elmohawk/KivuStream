@@ -188,179 +188,293 @@ href="logo.png">
 <!-- DOTS -->
 <div class="hero-dots"></div>
 </section> 
-
-  <!-- ================= RECENTLY ADDED ================= -->
-
+<!-- ================= RECENTLY ADDED ================= -->
 <section class="movie-section">
+    <div class="section-header">
+        <h2>🔥 Recently Added</h2>
 
-  <div class="section-header">
-    <h2>Recently Added</h2>
-    <a href="#">View All</a>
-  </div>
+        <button
+            class="view-all-btn"
+            onclick="openSection('recent')">
 
-<div class="movie-row" id="recently-added">
+            View All →
 
-    <!-- Movie Card 1 -->
-    <div class="movie-card">
-      <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" alt="Movie">
-
-      <div class="movie-overlay">
-        <button><i class="fas fa-play"></i></button>
-      </div>
-
-      <div class="movie-info">
-        <h3>Avengers: Endgame</h3>
-        <span>Action • 2019</span>
-      </div>
+        </button>
     </div>
 
-    <!-- Movie Card 2 -->
-    <div class="movie-card">
-      <img src="https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg" alt="Movie">
-
-      <div class="movie-overlay">
-        <button><i class="fas fa-play"></i></button>
-      </div>
-
-      <div class="movie-info">
-        <h3>Wonder Woman 1984</h3>
-        <span>Action • 2020</span>
-      </div>
-    </div>
-
-    <!-- Movie Card 3 -->
-    <div class="movie-card">
-      <img src="https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg" alt="Movie">
-
-      <div class="movie-overlay">
-        <button><i class="fas fa-play"></i></button>
-      </div>
-
-      <div class="movie-info">
-        <h3>Avengers: Infinity War</h3>
-        <span>Sci-Fi • 2018</span>
-      </div>
-    </div>
-
-    <!-- Movie Card 4 -->
-    <div class="movie-card">
-      <img src="https://image.tmdb.org/t/p/w500/6KErczPBROQty7QoIsaa6wJYXZi.jpg" alt="Movie">
-
-      <div class="movie-overlay">
-        <button><i class="fas fa-play"></i></button>
-      </div>
-
-      <div class="movie-info">
-        <h3>Dune</h3>
-        <span>Sci-Fi • 2021</span>
-      </div>
-    </div>
-
-    <!-- Movie Card 5 -->
-    <div class="movie-card">
-      <img src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg" alt="Movie">
-
-      <div class="movie-overlay">
-        <button><i class="fas fa-play"></i></button>
-      </div>
-
-      <div class="movie-info">
-        <h3>Ad Astra</h3>
-        <span>Adventure • 2019</span>
-      </div>
-    </div>
-
-  </div>
-
+    <div id="recent-slider" class="movies-row"></div>
 </section>
-  <!-- ================= LATEST SERIES ================= -->
+
+<!-- ================= MOVIES ================= -->
 <section class="movie-section">
-  <div class="section-header">
-    <h2>Latest Series</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="latest-series"></div>
+    <div class="section-header">
+        <h2>🎬 Movies</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('movie')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="movies-container" class="movies-row"></div>
+</section>
+
+<!-- ================= LATEST SERIES ================= -->
+<section class="movie-section">
+    <div class="section-header">
+        <h2>📺 Latest Series</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('series')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="series-container" class="movies-row"></div>
 </section>
 
 <!-- ================= ACTION ================= -->
 <section class="movie-section">
-  <div class="section-header">
-    <h2>Action</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="action-movies"></div>
+    <div class="section-header">
+        <h2>⚡ Action</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('Action')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="action-container" class="movies-row"></div>
+</section>
+
+<!-- ================= INDIAN ================= -->
+<section class="movie-section">
+    <div class="section-header">
+        <h2>🇮🇳 Indian</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('Indian')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="indian-container" class="movies-row"></div>
 </section>
 
 <!-- ================= HORROR ================= -->
 <section class="movie-section">
-  <div class="section-header">
-    <h2>Horror</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="horror-movies"></div>
+    <div class="section-header">
+        <h2>👻 Horror</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('Horror')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="horror-container" class="movies-row"></div>
 </section>
 
 <!-- ================= COMEDY ================= -->
 <section class="movie-section">
-  <div class="section-header">
-    <h2>Comedy</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="comedy-movies"></div>
+    <div class="section-header">
+        <h2>😂 Comedy</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('Comedy')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="comedy-container" class="movies-row"></div>
 </section>
 
 <!-- ================= ROMANCE ================= -->
 <section class="movie-section">
-  <div class="section-header">
-    <h2>Romance</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="romance-movies"></div>
-</section>
+    <div class="section-header">
+        <h2>❤️ Romance</h2>
 
-<!-- ================= HIGHSCHOOL ================= -->
-<section class="movie-section">
-  <div class="section-header">
-    <h2>High School</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="highschool-movies"></div>
+        <button
+            class="view-all-btn"
+            onclick="openSection('Romance')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="romance-container" class="movies-row"></div>
 </section>
 
 <!-- ================= DRAMA ================= -->
 <section class="movie-section">
-  <div class="section-header">
-    <h2>Drama</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="drama-movies"></div>
+    <div class="section-header">
+        <h2>🎭 Drama</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('Drama')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="drama-container" class="movies-row"></div>
 </section>
 
 <!-- ================= CRIME ================= -->
 <section class="movie-section">
-  <div class="section-header">
-    <h2>Crime</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="crime-movies"></div>
+    <div class="section-header">
+        <h2>🔫 Crime</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('Crime')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="crime-container" class="movies-row"></div>
 </section>
 
 <!-- ================= SCI-FI ================= -->
 <section class="movie-section">
-  <div class="section-header">
-    <h2>Sci-Fi</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="scifi-movies"></div>
+    <div class="section-header">
+        <h2>🚀 Sci-Fi</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('Sci-Fi')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="scifi-container" class="movies-row"></div>
+</section>
+
+<!-- ================= HIGH SCHOOL ================= -->
+<section class="movie-section">
+    <div class="section-header">
+        <h2>🏫 High School</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('HighSchool')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="highschool-container" class="movies-row"></div>
 </section>
 
 <!-- ================= ANIMATION ================= -->
 <section class="movie-section">
-  <div class="section-header">
-    <h2>Animation</h2>
-    <a href="#">View All</a>
-  </div>
-  <div class="movie-row" id="animation-movies"></div>
+    <div class="section-header">
+        <h2>🎨 Animation</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('Animation')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="animation-container" class="movies-row"></div>
+</section>
+
+<!-- ================= TV SERIES ================= -->
+<section class="movie-section">
+    <div class="section-header">
+        <h2>📺 TV Series</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('series')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="tvseries-container" class="movies-row"></div>
+</section>
+
+<!-- ================= OTHER MOVIES ================= -->
+<section class="movie-section">
+    <div class="section-header">
+        <h2>🎞 Other Movies</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('Other Movies')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="othermovies-container" class="movies-row"></div>
+</section>
+
+<!-- ================= RECOMMENDED ================= -->
+<section class="movie-section">
+    <div class="section-header">
+        <h2>⭐ Recommended For You</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('recommended')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="updates-container" class="movies-row"></div>
+</section>
+
+<!-- ================= CONTINUE WATCHING ================= -->
+<section class="movie-section">
+    <div class="section-header">
+        <h2>▶ Continue Watching</h2>
+
+        <button
+            class="view-all-btn"
+            onclick="openSection('continue')">
+
+            View All →
+
+        </button>
+    </div>
+
+    <div id="continue-container" class="movies-row"></div>
 </section>
  <!-- ======================================
         PREMIUM HELP & SUPPORT
