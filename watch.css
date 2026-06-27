@@ -654,6 +654,187 @@ justify-content:center;
   border-radius:50%;
   background:#2563eb;
 }
+/*=====================================
+    RECOMMENDED MOVIES
+=====================================*/
+
+.recommended-section{
+
+    padding:70px;
+
+    background:#05070d;
+
+}
+
+.recommended-section h2{
+
+    font-size:32px;
+
+    margin-bottom:30px;
+
+}
+
+.recommended-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(auto-fill,minmax(220px,1fr));
+
+    gap:28px;
+
+}
+
+.recommend-card{
+
+    cursor:pointer;
+
+    transition:.35s;
+
+}
+
+.recommend-card:hover{
+
+    transform:
+
+    translateY(-8px);
+
+}
+
+.recommend-image{
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:18px;
+
+    background:#111;
+
+}
+
+.recommend-image img{
+
+    width:100%;
+
+    height:330px;
+
+    object-fit:cover;
+
+    display:block;
+
+    transition:.45s;
+
+}
+
+.recommend-card:hover img{
+
+    transform:scale(1.08);
+
+}
+
+.recommend-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.55);
+
+    opacity:0;
+
+    transition:.35s;
+
+}
+
+.recommend-card:hover .recommend-overlay{
+
+    opacity:1;
+
+}
+
+.recommend-overlay button{
+
+    background:#e50914;
+
+    color:white;
+
+    border:none;
+
+    padding:14px 24px;
+
+    border-radius:40px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.recommend-rating{
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    background:#e50914;
+
+    color:#fff;
+
+    padding:8px 12px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+.recommend-info{
+
+    padding:15px 5px;
+
+}
+
+.recommend-info h3{
+
+    margin:0;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+.recommend-info p{
+
+    margin:8px 0;
+
+    color:#9ca3af;
+
+}
+
+.recommend-info small{
+
+    color:#666;
+
+}
 /* =========================
    SUPPORT (PRO NETFLIX STYLE)
 ========================= */
