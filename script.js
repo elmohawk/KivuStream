@@ -657,6 +657,14 @@ async function loadEpisodes(seriesId) {
     )
     .join("");
 }
+const viewAllMovies =
+JSON.parse(localStorage.getItem("viewAllData")) || [];
+
+container.innerHTML = "";
+
+viewAllMovies.forEach(movie=>{
+    container.appendChild(createMovieCard(movie));
+});
 /* =========================
    RENDER ALL
 ========================= */
@@ -668,12 +676,7 @@ function normalize(str) {
 }
 
 function renderAll(movies) {
-const viewAllMovies =
-    JSON.parse(localStorage.getItem("viewAllData")) || [];
-
-viewAllMovies.forEach(movie => {
-    container.appendChild(createMovieCard(movie));
-});
+const container = document.getElementById("viewall-container");
 movies.forEach(movie=>{
     container.appendChild(
         createMovieCard(movie)
