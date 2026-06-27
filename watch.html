@@ -138,10 +138,50 @@
     </div>
 
 </header>
-<!-- PLAYER -->
-<div class="player-wrap">
-  <video id="player" controls></video>
-</div>
+<!-- =====================================
+     PREMIUM PLAYER
+====================================== -->
+<section class="player-section">
+
+    <div class="player-header">
+
+        <div>
+
+            <h2>
+                🎬 Now Playing
+            </h2>
+
+            <p>
+                Enjoy HD streaming with KivuStream
+            </p>
+
+        </div>
+
+        <div class="player-quality">
+
+            <span>HD</span>
+
+            <span>Fast Server</span>
+
+            <span>Auto Next</span>
+
+        </div>
+
+    </div>
+
+    <div class="player-wrap">
+
+        <video
+            id="player"
+            controls
+            controlsList="nodownload"
+            preload="metadata"
+            playsinline>
+        </video>
+
+    </div>
+
+</section>
 
 <!-- SERIES EPISODES (ONLY IF SERIES) -->
 <section id="series-section" style="display:none; padding:20px;">
