@@ -354,7 +354,7 @@ window.allMovies = [];
 let allMovies = window.allMovies;
 let currentMovie = null;
 let currentHero = null;
-const HOMEPAGE_LIMIT = 7;
+const HOMEPAGE_LIMIT = 6;
 /* =========================
    DOM HELPER
 ========================= */
@@ -668,7 +668,16 @@ function normalize(str) {
 }
 
 function renderAll(movies) {
+const movies =
+JSON.parse(
+localStorage.getItem("viewAllData")
+) || [];
 
+movies.forEach(movie=>{
+    container.appendChild(
+        createMovieCard(movie)
+    );
+});
   const safe = (movies || []).filter(Boolean);
    const sortedContent = [...safe].sort((a, b) => {
 
@@ -2395,20 +2404,17 @@ const sectionPages = {};
 const sectionData = {};
 function renderPaginatedRow(id, items) {
 
-  const container = $(id);
+    const container = $(id);
 
-  if (!container) return;
+    if (!container) return;
 
-  container.innerHTML = "";
+    container.innerHTML = "";
 
-  const latest =
-    items.slice(0,);
-
-  latest.forEach((movie) => {
-    container.appendChild(
-      createMovieCard(movie)
-    );
-  });
+    items
+        .slice(0, HOMEPAGE_LIMIT)
+        .forEach(movie => {
+            container.appendChild(createMovieCard(movie));
+        });
 
 }
 /* =========================
