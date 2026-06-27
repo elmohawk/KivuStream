@@ -660,11 +660,15 @@ async function loadEpisodes(seriesId) {
 const viewAllMovies =
 JSON.parse(localStorage.getItem("viewAllData")) || [];
 
-container.innerHTML = "";
+const container = document.getElementById("viewall-container");
 
-viewAllMovies.forEach(movie=>{
-    container.appendChild(createMovieCard(movie));
-});
+if (container) {
+    container.innerHTML = "";
+
+    viewAllMovies.forEach(movie => {
+        container.appendChild(createMovieCard(movie));
+    });
+}
 /* =========================
    RENDER ALL
 ========================= */
