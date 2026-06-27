@@ -72,6 +72,9 @@ return;
 }
 
 currentMovie=data;
+  if (currentMovie.tmdb_id) {
+  await enrichMovieFromTMDB(currentMovie);
+}
 
 renderMovie();
 
@@ -84,6 +87,73 @@ alert(
 );
 
 }
+
+}
+async function enrichMovieFromTMDB(movie){
+
+  try{
+
+    const TMDB_API_KEY = "8b8937bf3e114fa3502358a4f090c0df";
+
+    const endpoint =
+      movie.type === "series"
+      ? "tv"
+      : "movie";
+
+    const response = await fetch(
+      `https://api.themoviedb.org/3/${endpoint}/${movie.tmdb_id}?api_key=${TMDB_API_KEY}&language=en-US`
+    );
+
+    const tmdb = await response.json();
+
+    console.log("TMDB DATA:", tmdb);
+
+    // fill only empty fields
+
+    if(!movie.description){
+      movie.description = tmdb.overview;
+    }
+
+    if(!movie.banner && tmdb.backdrop_path){
+      movie.banner =
+      `https://image.tmdb.org/t/p/original${tmdb.backdrop_path}`;
+    }
+
+    if(!movie.image && tmdb.poster_path){
+      movie.image =
+      `https://image.tmdb.org/t/p/w500${tmdb.poster_path}`;
+    }
+
+    if(!movie.year){
+
+      if(endpoint === "movie"){
+        movie.year =
+        tmdb.release_date?.substring(0,4);
+      }else{
+        movie.year =
+        tmdb.first_air_date?.substring(0,4);
+      }
+
+    }
+
+    if(!movie.rating){
+      movie.rating =
+      tmdb.vote_average?.toFixed(1);
+    }
+
+    if(!movie.category && tmdb.genres){
+      movie.category =
+      tmdb.genres.map(g=>g.name).join(", ");
+    }
+
+  }catch(err){
+
+    console.error(
+      "TMDB enrichment failed:",
+      err
+    );
+
+  }
 
 }
 /* ---------------------------
@@ -100,7 +170,10 @@ function renderMovie() {
 "movie-title",
 movie.title || "Unknown Movie"
 );
-
+  setText(
+  "movie-year",
+  movie.year || "2026"
+);
 setText(
 "movie-description",
 movie.description ||
@@ -131,29 +204,36 @@ document.getElementById("movie-type").innerHTML =
   movie.type === "series"
     ? "📺 Series"
     : "🎬 Movie";
-  document.getElementById("movie-status").innerHTML =
-  movie.status || "🔥 Trending";
+ document.getElementById("movie-status").innerHTML =
+movie.status ||
+`⭐ ${movie.rating || "HD"}`;
 
   /* PLAY BUTTON */
   const watchBtn = document.getElementById("watch-btn");
   if (watchBtn) {
- watchBtn.onclick = () => {
+watchBtn.onclick = () => {
 
-  if (!movie.video) {
-    alert("Video not available.");
+  // normal movie
+  if(movie.video){
+
+    playEpisode(movie.video);
+    return;
+
+  }
+
+  // multipart or series
+  if(allEpisodes.length > 0){
+
+    playEpisode(
+      allEpisodes[0].video_url
+    );
+
     return;
   }
 
-  const player =
-    document.getElementById("player");
-
-  player.src = movie.video;
-
-  player.scrollIntoView({
-    behavior: "smooth"
-  });
-
-  player.play();
+  alert(
+    "No video available."
+  );
 
 };
   /* DOWNLOAD */
