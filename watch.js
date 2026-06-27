@@ -234,8 +234,8 @@ watchBtn.onclick = () => {
   alert(
     "No video available."
   );
-
 };
+  }
   /* DOWNLOAD */
   const downloadBtn = document.getElementById("download-btn");
   if (downloadBtn) {
