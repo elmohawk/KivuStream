@@ -680,12 +680,6 @@ function normalize(str) {
 }
 
 function renderAll(movies) {
-const container = document.getElementById("viewall-container");
-movies.forEach(movie=>{
-    container.appendChild(
-        createMovieCard(movie)
-    );
-});
   const safe = (movies || []).filter(Boolean);
    const sortedContent = [...safe].sort((a, b) => {
 
