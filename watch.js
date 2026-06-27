@@ -1,27 +1,23 @@
-console.log("Searching for movie:", id);
-const params =
-new URLSearchParams(
-  window.location.search
-);
-
-const id =
-params.get("id");
-
-console.log("Movie ID:", id);
-
-const supabaseUrl = "https://exjgejujfxejjlbfizgz.supabase.co";
+const supabaseUrl =
+"https://exjgejujfxejjlbfizgz.supabase.co";
 
 const supabaseKey =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4amdlanVqZnhlampsYmZpemd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MTQzMTQsImV4cCI6MjA5NDA5MDMxNH0.CWUYLp4qJfriIYXWScB7wcHHVTCuz0SGDhWUV3tMR1Y";
-console.log("Supabase loaded:", window.supabase);
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4amdlanVqZnhlampsYmZpemd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MTQzMTQsImV4cCI6MjA5NDA5MDMxNH0.CWUYLk4qJfriIYXWScB7wcHHVTCuz0SGDhWUV3tMR1Y";
+
+console.log(
+  "Supabase loaded:",
+  window.supabase
+);
+
 const supabaseClient =
 window.supabase.createClient(
   supabaseUrl,
   supabaseKey
 );
+
 let currentMovie = null;
 let allEpisodes = [];
-
+let currentEpisodeIndex = 0;
 /* ---------------------------
    INIT
 ----------------------------*/
@@ -82,10 +78,10 @@ renderMovie();
 
 }catch(err){
 
-console.error(err);
+console.error("FULL ERROR:", err);
 
 alert(
-"Movie failed to load"
+  err.message || JSON.stringify(err)
 );
 
 }
