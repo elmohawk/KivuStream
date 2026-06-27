@@ -871,3 +871,24 @@ backdrop-filter:blur(20px);
     font-size:.9rem;
     font-weight:600;
 }
+.episode-number{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:8px 14px;
+background:#2563eb;
+border-radius:30px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.episode-actions{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.watch-ep,
+.download-ep{
+flex:1;
+}
