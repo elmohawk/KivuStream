@@ -1,4 +1,4 @@
-console.log("Searching for movie:", id);
+
 const params =
 new URLSearchParams(
   window.location.search
