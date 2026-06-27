@@ -454,46 +454,97 @@ playEpisode(next.video_url);
 ----------------------------*/
 async function loadRecommended() {
 
-  if (!currentMovie) return;
+    if (!currentMovie) return;
 
-const { data, error } = await supabaseClient
-.from("movies")
-.select("*")
-.eq("category", currentMovie.category)
-.limit(12);
-  if (error) {
-    console.error("Recommendation error:", error);
-    return;
-  }
+    const { data, error } = await supabaseClient
+        .from("movies")
+        .select("*")
+        .neq("id", currentMovie.id)
+        .limit(12);
 
-  const container = document.getElementById("recommended-container");
+    if (error) {
+        console.error(error);
+        return;
+    }
 
-  if (!container) return;
+    const container =
+        document.getElementById("recommended-container");
 
-  container.innerHTML = "";
+    container.innerHTML = "";
 
-  if (!data || data.length === 0) {
-    container.innerHTML = "<p>No recommendations available.</p>";
-    return;
-  }
+    if (!data || data.length === 0) {
 
-  data.forEach(movie => {
+        container.innerHTML =
+        "<p>No recommendations available.</p>";
 
-    const card = document.createElement("div");
-    card.className = "movie-card";
+        return;
+    }
 
-    card.innerHTML = `
-      <img src="${movie.image}" alt="${movie.title}">
-      <h3>${movie.title}</h3>
-      <p>${movie.category || ""}</p>
-    `;
+    data.forEach(movie => {
 
-    card.onclick = () => {
-      window.location.href = `watch.html?id=${movie.id}`;
-    };
+        const card =
+        document.createElement("div");
 
-    container.appendChild(card);
-  });
+        card.className = "recommend-card";
+
+        card.innerHTML = `
+
+            <div class="recommend-image">
+
+                <img
+                    src="${movie.image || './logo.png'}"
+                    alt="${movie.title}">
+
+                <div class="recommend-overlay">
+
+                    <button>
+                        ▶ Watch
+                    </button>
+
+                </div>
+
+                <span class="recommend-rating">
+
+                    ⭐ ${movie.rating || "HD"}
+
+                </span>
+
+            </div>
+
+            <div class="recommend-info">
+
+                <h3>
+
+                    ${movie.title}
+
+                </h3>
+
+                <p>
+
+                    ${movie.category || "Entertainment"}
+
+                </p>
+
+                <small>
+
+                    ${movie.year || ""}
+
+                </small>
+
+            </div>
+
+        `;
+
+        card.onclick = () => {
+
+            window.location.href =
+            `watch.html?id=${movie.id}`;
+
+        };
+
+        container.appendChild(card);
+
+    });
 
 }
 /* ---------------------------
