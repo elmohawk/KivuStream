@@ -668,11 +668,12 @@ function normalize(str) {
 }
 
 function renderAll(movies) {
-const movies =
-JSON.parse(
-localStorage.getItem("viewAllData")
-) || [];
+const viewAllMovies =
+    JSON.parse(localStorage.getItem("viewAllData")) || [];
 
+viewAllMovies.forEach(movie => {
+    container.appendChild(createMovieCard(movie));
+});
 movies.forEach(movie=>{
     container.appendChild(
         createMovieCard(movie)
