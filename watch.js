@@ -44,9 +44,8 @@ try{
 let { data, error } = await supabaseClient
 .from("movies")
 .select("*")
-.eq("id", Number(id))
+.eq("id", id)
 .maybeSingle();
-
 if (error || !data) {
 
     const seriesResult =
@@ -138,21 +137,25 @@ document.getElementById("movie-type").innerHTML =
   /* PLAY BUTTON */
   const watchBtn = document.getElementById("watch-btn");
   if (watchBtn) {
-  watchBtn.onclick = () => {
+ watchBtn.onclick = () => {
 
-    const player =
-      document.getElementById("player");
+  if (!movie.video) {
+    alert("Video not available.");
+    return;
+  }
 
-    player.src = movie.video;
+  const player =
+    document.getElementById("player");
 
-    player.scrollIntoView({
-      behavior: "smooth"
-    });
+  player.src = movie.video;
 
-    player.play();
+  player.scrollIntoView({
+    behavior: "smooth"
+  });
 
-  };
-}
+  player.play();
+
+};
   /* DOWNLOAD */
   const downloadBtn = document.getElementById("download-btn");
   if (downloadBtn) {
@@ -373,13 +376,12 @@ async function loadRecommended() {
 
   if (!currentMovie) return;
 
-  const { data, error } = await supabaseClient
-    .from("movies")
-    .select("*")
-    .eq("category", currentMovie.category) // same category
-    .neq("id", currentMovie.id)            // don't show current movie
-    .limit(12);
-
+const { data, error } = await supabaseClient
+.from("movies")
+.select("*")
+.eq("category", currentMovie.category)
+.neq("id", String(currentMovie.id))
+.limit(12);
   if (error) {
     console.error("Recommendation error:", error);
     return;
@@ -446,9 +448,15 @@ async function loadComments(movieId){
   const container = document.getElementById("comments-container");
   if(!container) return;
 
-  container.innerHTML = "";
+container.innerHTML = "";
 
-  data.forEach(c => {
+if (!data || data.length === 0) {
+  container.innerHTML =
+    "<p>No comments yet.</p>";
+  return;
+}
+
+data.forEach(c => {
 
     container.innerHTML += `
       <div class="comment">
