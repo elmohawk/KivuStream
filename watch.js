@@ -460,7 +460,6 @@ const { data, error } = await supabaseClient
 .from("movies")
 .select("*")
 .eq("category", currentMovie.category)
-.neq("id", String(currentMovie.id))
 .limit(12);
   if (error) {
     console.error("Recommendation error:", error);
