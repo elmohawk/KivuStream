@@ -1,3 +1,4 @@
+console.log("Searching for movie:", id);
 const params =
 new URLSearchParams(
   window.location.search
@@ -47,8 +48,8 @@ try{
 let { data, error } = await supabaseClient
 .from("movies")
 .select("*")
-.eq("id", id)
-.single();
+.eq("id", Number(id))
+.maybeSingle();
 
 if (error || !data) {
 
