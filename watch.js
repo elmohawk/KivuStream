@@ -165,12 +165,20 @@ document.getElementById("movie-type").innerHTML =
   }
 
   /* SERIES OR MOVIE */
-  if (movie.type === "series") {
-    loadSeriesEpisodes(movie.id);
-  } else {
-    const section = document.getElementById("series-section");
-    if (section) section.style.display = "none";
-  }
+ if (
+   movie.type === "series" ||
+   movie.type === "multipart"
+){
+   document.getElementById(
+      "series-section"
+   ).style.display = "block";
+
+   loadEpisodes(movie.id);
+}else{
+   document.getElementById(
+      "series-section"
+   ).style.display = "none";
+}
   
   document.getElementById("comment-btn").onclick = () => {
   postComment(currentMovie.id);
@@ -183,113 +191,184 @@ loadComments(currentMovie.id);
 /* ---------------------------
    LOAD EPISODES
 ----------------------------*/
-async function loadSeriesEpisodes(seriesId) {
+async function loadEpisodes(movieId){
 
-  const { data, error } = await supabaseClient
-    .from("episodes")
-    .select("*")
-    .eq("series_id", seriesId)
-    .order("season");
+const { data, error } =
+await supabaseClient
+.from("episodes")
+.select("*")
+.eq("series_id", movieId)
+.order("season")
+.order("episode");
 
-  if (error || !data) {
-    console.error("Episode error:", error);
-    return;
-  }
-
-  allEpisodes = data;
-
-  const seasons = [...new Set(data.map(e => e.season))];
-
-  const seasonButtons = document.getElementById("season-buttons");
-  if (!seasonButtons) return;
-
-  seasonButtons.innerHTML = "";
-
-  seasons.forEach(season => {
-    const btn = document.createElement("button");
-    btn.textContent = `Season ${season}`;
-    btn.onclick = () => showSeason(season);
-    seasonButtons.appendChild(btn);
-  });
-
- showSeason(seasons[0]);
-
-if (data.length > 0) {
-    playEpisode(data[0].video_url);
+if(error){
+console.error(error);
+return;
 }
 
-}
+allEpisodes = data || [];
 
+const seasons =
+[...new Set(
+allEpisodes.map(e=>e.season)
+)];
+
+const buttons =
+document.getElementById(
+"season-buttons"
+);
+
+buttons.innerHTML = "";
+
+seasons.forEach(season=>{
+
+const btn =
+document.createElement("button");
+
+btn.innerText =
+season === 0
+? "🎞 Parts"
+: `Season ${season}`;
+
+btn.onclick = () =>
+showSeason(season);
+
+buttons.appendChild(btn);
+
+});
+
+showSeason(seasons[0]);
+}
 /* ---------------------------
    SHOW SEASON
 ----------------------------*/
-function showSeason(season) {
-  const container = document.getElementById("episodes-container");
-  if (!container) return;
+function showSeason(season){
 
-  container.innerHTML = "";
+const container =
+document.getElementById(
+"episodes-container"
+);
 
-  const episodes = allEpisodes.filter(ep => ep.season == season);
+container.innerHTML = "";
 
-  episodes.forEach(ep => {
+const items =
+allEpisodes.filter(
+ep => ep.season == season
+);
 
-    const card = document.createElement("div");
-    card.className = "episode-card";
+items.forEach(item=>{
 
-    card.innerHTML = `
+const card =
+document.createElement("div");
+
+card.className =
+"episode-card";
+
+card.innerHTML = `
 
 <div class="episode-left">
 
-   <span class="episode-number">
-      EP ${ep.episode}
-   </span>
+<span class="episode-number">
 
-   <div>
+${
+item.type==="movie_part"
+?
+`🎞 Part ${item.part}`
+:
+`EP ${item.episode}`
+}
 
-      <h3>${ep.title}</h3>
+</span>
 
-      <small>
-        Season ${ep.season}
-      </small>
+<div>
 
-   </div>
+<h3>${item.title}</h3>
+
+<small>
+
+${
+season===0
+?
+"Movie Parts"
+:
+`Season ${season}`
+}
+
+</small>
+
+</div>
 
 </div>
 
 <div class="episode-actions">
 
-   <button class="watch-ep">
-      ▶ Watch
-   </button>
+<button class="watch-ep">
+▶ Watch
+</button>
 
-   <button class="download-ep">
-      ⬇
-   </button>
+<button class="download-ep">
+⬇ Download
+</button>
 
 </div>
-
 `;
 
-    card.querySelector(".watch-ep").onclick = () => playEpisode(ep.video_url);
-    card.querySelector(".download-ep").onclick = () =>window.open(ep.download_url);
+card.querySelector(
+".watch-ep"
+).onclick = () =>
+playEpisode(item.video_url);
 
-    container.appendChild(card);
-  });
+card.querySelector(
+".download-ep"
+).onclick = () =>
+window.open(
+item.download_url
+);
+
+container.appendChild(card);
+
+});
 }
-
 /* ---------------------------
    PLAY EPISODE
 ----------------------------*/
-function playEpisode(video) {
+function playEpisode(video){
 
-  const player = document.getElementById("player");
+const player =
+document.getElementById("player");
 
-  player.src = video;
-  player.play();
+player.src = video;
 
-  player.scrollIntoView({ behavior: "smooth" });
+player.play();
+
+player.scrollIntoView({
+behavior:"smooth"
+});
+
+currentEpisodeIndex =
+allEpisodes.findIndex(
+ep=>ep.video_url===video
+);
+
+}
+document
+.getElementById("player")
+.addEventListener(
+"ended",
+()=>{
+
+const next =
+allEpisodes[
+currentEpisodeIndex + 1
+];
+
+if(next){
+
+playEpisode(next.video_url);
+
 }
 
+});
 /* ---------------------------
    RECOMMENDED MOVIES
 ----------------------------*/
