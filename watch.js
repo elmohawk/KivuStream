@@ -44,13 +44,24 @@ return;
 }
 
 try{
-
-const { data,error } =
-await supabaseClient
+let { data, error } = await supabaseClient
 .from("movies")
 .select("*")
-.eq("id",id)
+.eq("id", id)
 .single();
+
+if (error || !data) {
+
+    const seriesResult =
+    await supabaseClient
+    .from("series")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+    data = seriesResult.data;
+    error = seriesResult.error;
+}
 
 console.log("DATA:",data);
 console.log("ERROR:",error);
@@ -204,7 +215,7 @@ async function loadSeriesEpisodes(seriesId) {
  showSeason(seasons[0]);
 
 if (data.length > 0) {
-  playEpisode(data[0].video);
+    playEpisode(data[0].video_url);
 }
 
 }
@@ -259,8 +270,8 @@ function showSeason(season) {
 
 `;
 
-    card.querySelector(".watch-ep").onclick = () => playEpisode(ep.video);
-    card.querySelector(".download-ep").onclick = () => window.open(ep.download);
+    card.querySelector(".watch-ep").onclick = () => playEpisode(ep.video_url);
+    card.querySelector(".download-ep").onclick = () =>window.open(ep.download_url);
 
     container.appendChild(card);
   });
@@ -280,36 +291,54 @@ function playEpisode(video) {
 }
 
 /* ---------------------------
-   RECOMMENDED
+   RECOMMENDED MOVIES
 ----------------------------*/
 async function loadRecommended() {
 
-  const { data } = await supabaseClient
+  if (!currentMovie) return;
+
+  const { data, error } = await supabaseClient
     .from("movies")
     .select("*")
+    .eq("category", currentMovie.category) // same category
+    .neq("id", currentMovie.id)            // don't show current movie
     .limit(12);
 
+  if (error) {
+    console.error("Recommendation error:", error);
+    return;
+  }
+
   const container = document.getElementById("recommended-container");
-  if (!container || !data) return;
+
+  if (!container) return;
 
   container.innerHTML = "";
 
-(data || []).forEach(movie => {
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p>No recommendations available.</p>";
+    return;
+  }
+
+  data.forEach(movie => {
 
     const card = document.createElement("div");
     card.className = "movie-card";
 
     card.innerHTML = `
-      <img src="${movie.image}" />
+      <img src="${movie.image}" alt="${movie.title}">
       <h3>${movie.title}</h3>
+      <p>${movie.category || ""}</p>
     `;
 
-    card.onclick = () => openMovie(movie.id);
+    card.onclick = () => {
+      window.location.href = `watch.html?id=${movie.id}`;
+    };
 
     container.appendChild(card);
   });
-}
 
+}
 /* ---------------------------
    NAVIGATION
 ----------------------------*/
@@ -417,21 +446,27 @@ async function postComment(movieId) {
   }
 }
 
-  window.addEventListener("load",()=>{
+ window.addEventListener("load",()=>{
 
 const loader =
-document.getElementById(
-"loading-screen"
-);
+document.getElementById("loading-screen");
 
 if(loader){
 loader.remove();
 }
 
 });
-const params = new URLSearchParams(window.location.search);
+const loader =
+document.getElementById("loading-screen");
 
-const movieId = params.get("id");
-const tmdbId = params.get("tmdb");
+if(loader){
 
-let currentMovie = null;
+loader.style.opacity="0";
+
+setTimeout(()=>{
+
+loader.remove();
+
+},300);
+
+}
